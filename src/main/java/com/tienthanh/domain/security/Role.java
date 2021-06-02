@@ -6,26 +6,25 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Role<E> {
+public class Role {
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int roleId;
+
 	private String name;
 
-	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Set<UserRole> userRoles = new HashSet<>();
-
 	public Role() {
-		super();
 	}
 
-	public Role(int roleId, String name, Set<UserRole> userRoles) {
+	public Role(int roleId, String name) {
 		this.roleId = roleId;
 		this.name = name;
-		this.userRoles = userRoles;
 	}
 
 	public int getRoleId() {
@@ -44,12 +43,5 @@ public class Role<E> {
 		this.name = name;
 	}
 
-	public Set<UserRole> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(Set<UserRole> userRoles) {
-		this.userRoles = userRoles;
-	}
 
 }
