@@ -10,7 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.tienthanh.domain.User;
+import com.tienthanh.domain.Account;
 
 @Entity
 public class PasswordResetToken {
@@ -22,18 +22,17 @@ public class PasswordResetToken {
 
 	private String token;
 
-	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
-	private User user;
+	@OneToOne(targetEntity = Account.class, fetch = FetchType.EAGER)
+	private Account account;
 
 	private Date expiryDate;
 
 	public PasswordResetToken() {
 	}
 
-	public PasswordResetToken(final String token, final User user) {
-		super();
+	public PasswordResetToken(final String token, final Account account) {
 		this.token = token;
-		this.user = user;
+		this.account = account;
 		this.expiryDate = calculateExpiryDate(EXPIRRATION);
 	}
 
@@ -65,12 +64,12 @@ public class PasswordResetToken {
 		this.token = token;
 	}
 
-	public User getUser() {
-		return user;
+	public Account getAccount() {
+		return account;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setAccount(Account account) {
+		this.account = account;
 	}
 
 	public Date getExpiryDate() {
@@ -87,7 +86,7 @@ public class PasswordResetToken {
 
 	@Override
 	public String toString() {
-		return "PasswordResetToken [id=" + id + ", token=" + token + ", user=" + user + ", expiryDate=" + expiryDate
+		return "PasswordResetToken [id=" + id + ", token=" + token + ", user=" + account + ", expiryDate=" + expiryDate
 				+ "]";
 	}
 }

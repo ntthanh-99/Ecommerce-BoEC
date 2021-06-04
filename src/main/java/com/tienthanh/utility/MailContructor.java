@@ -14,8 +14,8 @@ import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
-import com.tienthanh.domain.Order;
-import com.tienthanh.domain.User;
+import com.tienthanh.domain.Account;
+import com.tienthanh.domain.oder.Oder;
 
 @Component
 public class MailContructor {
@@ -25,32 +25,32 @@ public class MailContructor {
 	@Autowired
 	private TemplateEngine templateEngine;
 	
-	public SimpleMailMessage contructResetTokenEmail(String contextPath, Locale locale, String token, User user,
+	public SimpleMailMessage contructResetTokenEmail(String contextPath, Locale locale, String token, Account account,
 			String password) {
 		String url = contextPath + "/newUser?token=" + token;
 		String message = "\nPlease click on link to verify your Email and edit your personal information. Your password is:\n"
 				+ password;
 		SimpleMailMessage email = new SimpleMailMessage();
-		email.setTo(user.getEmail());
-		email.setSubject("BookStore - New User");
+		email.setTo(account.getEmail());
+		email.setSubject("BoEC - New User");
 		email.setText(url + message);
 		email.setFrom(env.getProperty("support.email"));
 		return email;
 	}
 	
-	public MimeMessagePreparator constructOrderConfirmationEmail (User user, Order order, Locale locale) {
+	public MimeMessagePreparator constructOrderConfirmationEmail(Account account, Oder oder, Locale locale) {
 		Context context = new Context();
-		context.setVariable("order", order);
-		context.setVariable("user", user);
-		context.setVariable("cartItemList", order.getCartItemList());
+		context.setVariable("order", oder);
+		context.setVariable("user", account);
+		context.setVariable("cartItemList", oder.getCartProductList());
 		String text = templateEngine.process("orderConfirmationEmailTemplate", context);
 		
 		MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper email = new MimeMessageHelper(mimeMessage);
-				email.setTo(user.getEmail());
-				email.setSubject("Order Confirmation - "+order.getId());
+				email.setTo(account.getEmail());
+				email.setSubject("Order Confirmation - " + oder.getId());
 				email.setText(text, true);
 				email.setFrom(new InternetAddress("nguyentienthanh20091108@gmail.com"));
 			}
