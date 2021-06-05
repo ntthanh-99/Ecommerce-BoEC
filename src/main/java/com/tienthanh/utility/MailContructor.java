@@ -15,6 +15,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import com.tienthanh.domain.Account;
+import com.tienthanh.domain.customer.CustomerPayment;
+import com.tienthanh.domain.customer.CustomerShipping;
 import com.tienthanh.domain.oder.Oder;
 
 @Component
@@ -28,7 +30,7 @@ public class MailContructor {
 	public SimpleMailMessage contructResetTokenEmail(String contextPath, Locale locale, String token, Account account,
 			String password) {
 		String url = contextPath + "/newUser?token=" + token;
-		String message = "\nPlease click on link to verify your Email and edit your personal information. Your password is:\n"
+		String message = "\n Vui lòng click vào đường dẫn phía trên để xác thực và thay đổi thông tin cá nhân. Mật khẩu của bạn là: \n"
 				+ password;
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(account.getEmail());
@@ -38,10 +40,13 @@ public class MailContructor {
 		return email;
 	}
 	
-	public MimeMessagePreparator constructOrderConfirmationEmail(Account account, Oder oder, Locale locale) {
+	public MimeMessagePreparator constructOrderConfirmationEmail(Account account, CustomerShipping customerShipping,
+			CustomerPayment customerPayment, Oder oder, Locale locale) {
 		Context context = new Context();
 		context.setVariable("order", oder);
 		context.setVariable("user", account);
+		context.setVariable("customerShipping", customerShipping);
+		context.setVariable("customerPayment", customerPayment);
 		context.setVariable("cartItemList", oder.getCartProductList());
 		String text = templateEngine.process("orderConfirmationEmailTemplate", context);
 		

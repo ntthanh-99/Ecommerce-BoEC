@@ -1,5 +1,6 @@
 package com.tienthanh.domain.oder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Shipping {
 	@OneToOne
 	private Shipper shipper;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private CustomerShipping customerShipping;
 
 	public Shipping() {

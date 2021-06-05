@@ -13,10 +13,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import com.tienthanh.domain.AbstractClass;
 import com.tienthanh.domain.customer.Customer;
 
 @Entity
-public class Oder {
+public class Oder extends AbstractClass {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -32,7 +33,7 @@ public class Oder {
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	private Shipping shipping;
 
 	public Oder() {

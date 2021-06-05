@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1000/xhtml">
 <head th:replace="common/header :: common-header" />
-
+<meta charset="utf-8">
 <body>
 	<div th:replace="common/header :: navbar" />
 
@@ -10,7 +10,7 @@
 		<div class="row" style="margin-bottom: -100px;">
 			<div class="col-xs-8">
 				<h2 class="section-headline">
-					<span>User Account</span>
+					<span>Thanh toán thành công</span>
 				</h2>
 			</div>
 			<div class="col-xs-4">
@@ -27,38 +27,37 @@
 				<div class="alert alert-success">
 					<h3>
 						<i class="fa fa-check" aria-hidden="true"
-							style="color: limegreen;"></i> Thank you, your order has been
-						placed.
+							style="color: limegreen;"></i> Cảm ơn bạn đã mua hàng của chúng tôi!
 					</h3>
 					<h4>
-						The estimated delivery date is <span
+						Sản phẩm dự kiến được chuyển tới vào <span
 							th:text="${estimatedDeliveryDate}"></span>
 					</h4>
 				</div>
 
-				<h3>List of Items</h3>
+				<h3>Danh sách sản phẩm</h3>
 				<div class="row" th:each="cartItem : ${cartItemList}">
 					<hr />
 					<div class="col-xs-2"></div>
 					<div class="col-xs-2">
 
-						<a th:href="@{/bookDetail(id=${cartItem.book.id})}"> <img
+						<a th:href="@{/bookDetail(id=${cartItem.product.id})}"> <img
 							class="img-responsive shelf-book"
-							th:src="#{adminPath}+@{/image/book/}+${cartItem.book.id}+'.png'"
+							th:src="#{adminPath}+@{/image/book/}+${cartItem.product.id}+'.png'"
 							style="width: 70px;" />
 						</a>
 					</div>
 					<div class="col-xs-6">
 						<div style="margin-left: 50px;">
-							<a th:href="@{/bookDetail?id=}+${cartItem.book.id}"><h4
-									th:text="${cartItem.book.title}"></h4></a>
+							<a th:href="@{/bookDetail?id=}+${cartItem.product.id}"><h4
+									th:text="${cartItem.product.name}"></h4></a>
 						</div>
 					</div>
 
 					<div class="col-xs-2">
 						<h5 style="color: #db3208; font-size: large;">
-							$<span th:text="${cartItem.book.ourPrice}"
-								th:style="${cartItem.book.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+							$<span th:text="${cartItem.product.price}"
+								th:style="${cartItem.product.quanlity}==0? 'text-decoration: line-through' : ''"></span>
 						</h5>
 					</div>
 				</div>

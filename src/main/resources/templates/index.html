@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-      			xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head th:replace="common/header :: common-header" />
-
+<meta charset="utf-8">
 <body>
 	<div th:replace="common/header :: navbar" />
 
@@ -29,10 +29,7 @@
 										src="http://lorempixel.com/output/sports-q-c-1600-500-1.jpg"
 										alt="..." />
 									<div class="carousel-caption">
-										<h4>First Thumbnail Label</h4>
-										<p>Contrary to popular belief, Lorem Ipsum is not simply
-											random text. It has roots in a piece of classical Latin
-											literature from 45 BC, making it over 2000 years old.</p>
+										<h4>CHÀO ĐÓN MÙA HÈ VỚI NHIỀU PHẦN QUÀ HẤP DẪN</h4>
 									</div>
 								</div>
 								<div class="item">
@@ -40,10 +37,7 @@
 										src="http://lorempixel.com/output/sports-q-c-1600-500-2.jpg"
 										alt="..." />
 									<div class="carousel-caption">
-										<h4>First Thumbnail Label</h4>
-										<p>Contrary to popular belief, Lorem Ipsum is not simply
-											random text. It has roots in a piece of classical Latin
-											literature from 45 BC, making it over 2000 years old.</p>
+										<h4>KÈM THEO NHIỀU ƯU ĐÃI SIÊU KHỦNG</h4>
 									</div>
 								</div>
 								<div class="item">
@@ -51,10 +45,7 @@
 										src="http://lorempixel.com/output/sports-q-c-1600-500-3.jpg"
 										alt="..." />
 									<div class="carousel-caption">
-										<h4>First Thumbnail Label</h4>
-										<p>Contrary to popular belief, Lorem Ipsum is not simply
-											random text. It has roots in a piece of classical Latin
-											literature from 45 BC, making it over 2000 years old.</p>
+										<h4>NHANH TAY ĐẶT MUA NHỮNG ĐẦU SÁCH HAY</h4>
 									</div>
 								</div>
 								...
@@ -81,33 +72,46 @@
 
 		<hr />
 
+		<h4>Sách</h4>
 		<div class="row">
-			<div class="col-xs-4">
-				<div clas="panel panel-default">
-					<div class="panel-body">
-						<a th:href="@{/bookshelf}"><img src="/image/bestseller.png" class="img-responsive" /></a>
-					</div>
-				</div>
+			<div class="col-xs-2" th:each="book : ${bookList}">
+				<a th:href="@{/bookDetail?id=}+${book.id}"><img
+					class="img-responsive shelf-book"
+					th:src="#{adminPath}+@{/image/book/}+${book.product.id}+'.png'" /></a>
+				<a th:href="@{/bookDetail?id=}+${book.id}"><h4
+						th:text="${book.product.name}"></h4></a> <span
+					th:text="'$'+ ${book.product.price}"></span>
 			</div>
-			<div class="col-xs-4">
-				<div clas="panel panel-default">
-					<div class="panel-body">
-						<a th:href="@{/hours}"><img src="/image/hours.png" class="img-responsive" /></a>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-4">
-				<div clas="panel panel-default">
-					<div class="panel-body">
-						<a th:href="@{/faq}"><img src="/image/faq.png" class="img-responsive" /></a>
-					</div>
-				</div>
+
+		</div>
+		<br>
+		<h4>Đồ điện tử</h4>
+		<div class="row">
+			<div class="col-xs-2" th:each="electronic : ${electronicList}">
+				<a th:href="@{/bookDetail?id=}+${electronic.id}"><img
+					class="img-responsive shelf-book"
+					th:src="#{adminPath}+@{/image/book/}+${electronic.product.id}+'.png'" /></a>
+				<a th:href="@{/bookDetail?id=}+${electronic.id}"><h4
+						th:text="${electronic.product.name}"></h4></a> <span
+					th:text="'$'+ ${book.product.price}"></span>
 			</div>
 		</div>
-
+		<br>
+		<h4>Quần áo</h4>
+		<div class="row">
+			<div class="col-xs-2" th:each="clothes : ${clothesList}">
+				<a th:href="@{/bookDetail?id=}+${electronic.id}"><img
+					class="img-responsive shelf-book"
+					th:src="#{adminPath}+@{/image/book/}+${electronic.product.id}+'.png'" /></a>
+				<a th:href="@{/bookDetail?id=}+${electronic.id}"><h4
+						th:text="${electronic.product.name}"></h4></a> <span
+					th:text="'$'+ ${book.product.price}"></span>
+			</div>
+		</div>
+		<br> <br>
 		<div>
 			<div class="home-headline">
-				<span>Featured Books</span>
+				<span>Gợi ý cho bạn</span>
 			</div>
 			<hr style="margin-top: -15px;" />
 		</div>
@@ -128,23 +132,13 @@
 						<img src="/image/shelf.png" class="img-responsive" />
 						<div class="carousel-caption">
 							<div class="row">
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
+								<div class="col-xs-2" th:each="book : ${bookList}">
+									<a th:href="@{/bookDetail?id=}+${book.id}"><img
+										class="img-responsive shelf-book"
+										th:src="#{adminPath}+@{/image/book/}+${book.product.id}+'.png'" /></a>
+									<a th:href="@{/bookDetail?id=}+${book.id}"><h4
+											th:text="${book.product.name}"></h4></a> <span
+										th:text="'$'+ ${book.product.price}"></span>
 								</div>
 							</div>
 						</div>
@@ -153,23 +147,13 @@
 						<img src="/image/shelf.png" class="img-responsive" />
 						<div class="carousel-caption">
 							<div class="row">
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
+								<div class="col-xs-2" th:each="electronic : ${electronicList}">
+									<a th:href="@{/bookDetail?id=}+${electronic.id}"><img
+										class="img-responsive shelf-book"
+										th:src="#{adminPath}+@{/image/book/}+${electronic.product.id}+'.png'" /></a>
+									<a th:href="@{/bookDetail?id=}+${electronic.id}"><h4
+											th:text="${electronic.product.name}"></h4></a> <span
+										th:text="'$'+ ${book.product.price}"></span>
 								</div>
 							</div>
 						</div>
@@ -178,23 +162,13 @@
 						<img src="/image/shelf.png" class="img-responsive" />
 						<div class="carousel-caption">
 							<div class="row">
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
-								</div>
-								<div class="col-xs-2">
-									<img class="img-responsive" src="/image/book1.png" />
+								<div class="col-xs-2" th:each="clothes : ${clothesList}">
+									<a th:href="@{/bookDetail?id=}+${electronic.id}"><img
+										class="img-responsive shelf-book"
+										th:src="#{adminPath}+@{/image/book/}+${electronic.product.id}+'.png'" /></a>
+									<a th:href="@{/bookDetail?id=}+${electronic.id}"><h4
+											th:text="${electronic.product.name}"></h4></a> <span
+										th:text="'$'+ ${book.product.price}"></span>
 								</div>
 							</div>
 						</div>
@@ -217,7 +191,7 @@
 	</div>
 	<!-- end of container -->
 
-<div th:replace="common/header :: footer"/>
-<div th:replace="common/header :: body-bottom-scripts" />
+	<div th:replace="common/header :: footer" />
+	<div th:replace="common/header :: body-bottom-scripts" />
 </body>
 </html>

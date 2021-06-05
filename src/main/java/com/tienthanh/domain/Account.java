@@ -20,7 +20,7 @@ import com.tienthanh.domain.security.AccountRole;
 import com.tienthanh.domain.security.Authority;
 
 @Entity
-public class Account implements UserDetails {
+public class Account extends AbstractClass implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -1,6 +1,7 @@
 package com.tienthanh.controller;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -40,6 +41,7 @@ import com.tienthanh.service.AccountService;
 import com.tienthanh.service.CustomerService;
 import com.tienthanh.service.ProductService;
 import com.tienthanh.service.UserSecurityService;
+import com.tienthanh.service.impl.FormatDateImpl;
 import com.tienthanh.utility.MailContructor;
 import com.tienthanh.utility.SecurityUtility;
 import com.tienthanh.utility.USConstants;
@@ -64,8 +66,19 @@ public class HomeController {
 	@Autowired
 	private MailContructor mailContructor;
 
+	@Autowired
+	private FormatDateImpl formatDate;
+
 	@RequestMapping("/")
-	public String home() {
+	public String home(Model model,Principal principal) {
+		List<Book> books = productService.findAllActiveBook();
+		model.addAttribute("bookList", books);
+
+		List<Electronic> electronics = productService.findAllActiveElectronic();
+		model.addAttribute("electronicList", electronics);
+
+		List<Clothes> clothess = productService.findAllActiveClothes();
+		model.addAttribute("clothesList", clothess);
 		return "index";
 	}
 
@@ -161,8 +174,8 @@ public class HomeController {
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
 				userDetails.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
-		model.addAttribute("user", account);
+		Customer customer = customerService.findByAccount(account);
+		model.addAttribute("user", customer);
 		model.addAttribute("classActiveEdit", true);
 
 		return "myProfile";
@@ -444,5 +457,15 @@ public class HomeController {
 		model.addAttribute("qtyList", qtyList);
 		model.addAttribute("qty", 1);
 		return "bookDetail";
+	}
+
+	@PostMapping("/updateUserInfo")
+	public String updateUserInfo(@ModelAttribute("user") Customer customer,
+			@ModelAttribute("newPassword") String newPassword) {
+		customer.setModifyDate(formatDate.convertLocalDateTimeToDate(LocalDateTime.now()));
+		customer.getAccount()
+				.setPassword(SecurityUtility.passwordEncoder().encode(newPassword));
+		customerService.saveCustomer(customer);
+		return "redirect:/myProfile";
 	}
 }

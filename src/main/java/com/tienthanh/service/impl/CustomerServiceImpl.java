@@ -135,4 +135,10 @@ public class CustomerServiceImpl implements CustomerService {
 			}
 		}
 	}
+
+	@Override
+	public Customer saveCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		return customerRepository.save(customer);
+	}
 }

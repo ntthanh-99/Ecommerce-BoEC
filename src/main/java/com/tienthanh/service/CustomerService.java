@@ -14,6 +14,8 @@ public interface CustomerService {
 
 	Customer findByAccount(Account account);
 
+	Customer saveCustomer(Customer customer);
+
 	void updateCustomerPayment(CustomerPayment customerPayment, Customer customer);
 
 	CustomerPayment findCustomerPaymentById(Long id);

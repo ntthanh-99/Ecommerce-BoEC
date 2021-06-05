@@ -25,7 +25,7 @@ public class Product extends AbstractClass {
 	private String name;
 	private String description;
 	private double price;
-
+	private int quanlity;
 	@Transient
 	private MultipartFile productImage;
 
@@ -84,6 +84,14 @@ public class Product extends AbstractClass {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public int getQuanlity() {
+		return quanlity;
+	}
+
+	public void setQuanlity(int quanlity) {
+		this.quanlity = quanlity;
 	}
 
 //	public List<UsedBook> getUsedBookList() {
