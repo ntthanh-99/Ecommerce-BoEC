@@ -39,8 +39,6 @@ public class ShoppingCartController {
 	public String shoppingCart(Model model, Principal principal) {
 		String username = principal.getName();
 		Customer customer = customerService.findByAccount(accountRepository.findByUsername(username));
-
-
 		ShoppingCart shoppingCart = customer.getShopingCart();
 
 		List<CartProduct> cartProductList = oderService.findByShoppingCart(shoppingCart);

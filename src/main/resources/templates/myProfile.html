@@ -59,10 +59,9 @@
 									</div>
 
 									<form th:action="@{/updateUserInfo}" method="post">
-										<input type="hidden" name="id" th:field="*{user.id}" />
-
+									
 										<div class="bg-info" th:if="${updateUserInfo}">Thông tin được cập nhật</div>
-
+										<input type="hidden" th:value="${user.id}">
 										<div class="form-group">
 											<label for="userName">Tài khoản</label> ' <input type="text"
 												class="form-control" id="userName"
@@ -112,12 +111,17 @@
 									<table class="table table-sm table-inverse">
 										<thead>
 											<tr>
+												<th></th>
 												<th>Mã Oder</th>
 												<th>Trạng thái</th>
+												
 											</tr>
 										</thead>
 										<tbody>
 											<tr th:each="order : ${orderList}">
+												<td><a th:href="@{/orderDetail(id=${order.id})}">
+												<img alt="" src="/image/icon/view.png" width="20px">
+												</a></td>
 												<td data-th-text="${order.id}"></td>
 												<td data-th-text="${order.oderStatus}"></td>
 											</tr>

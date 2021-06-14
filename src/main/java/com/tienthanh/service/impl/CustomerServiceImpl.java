@@ -52,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 				roleRepository.save(accountRole.getRole());
 			}
 			Account account = customer.getAccount();
+			account.setEnabled(true);
 			account.getAccountRoles().addAll(accountRoles);
 			localCustomer = customerRepository.save(customer);
 		}

@@ -13,6 +13,8 @@ import com.tienthanh.domain.product.Product;
 public interface OderService {
 	List<CartProduct> findByShoppingCart(ShoppingCart shoppingCart);
 
+	ShoppingCart findShoppingCartByCustomer(Customer customer);
+
 	CartProduct findCartProductById(Long id);
 
 	CartProduct addProductToCartItem(Product product, Customer customer, int qty);
@@ -23,6 +25,8 @@ public interface OderService {
 
 	Oder createOrder(ShoppingCart shoppingCart, CustomerShipping customerShipping, CustomerPayment customerPayment,
 			Customer customer);
+
+	List<Oder> getOderforCustomer(Customer customer);
 
 	void clearShoppingCart(ShoppingCart shoppingCart);
 

@@ -37,8 +37,11 @@ import com.tienthanh.domain.product.Electronic;
 import com.tienthanh.domain.security.AccountRole;
 import com.tienthanh.domain.security.PasswordResetToken;
 import com.tienthanh.domain.security.Role;
+import com.tienthanh.repository.OderRepository;
+import com.tienthanh.repository.RoleRepository;
 import com.tienthanh.service.AccountService;
 import com.tienthanh.service.CustomerService;
+import com.tienthanh.service.OderService;
 import com.tienthanh.service.ProductService;
 import com.tienthanh.service.UserSecurityService;
 import com.tienthanh.service.impl.FormatDateImpl;
@@ -68,6 +71,15 @@ public class HomeController {
 
 	@Autowired
 	private FormatDateImpl formatDate;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Autowired
+	private OderRepository oderRepository;
+
+	@Autowired
+	private OderService oderService;
 
 	@RequestMapping("/")
 	public String home(Model model,Principal principal) {
@@ -132,6 +144,7 @@ public class HomeController {
 		Account account = new Account();
 		account.setEmail(userEmail);
 		account.setUsername(username);
+		account.setPosition("user");
 		// random password
 		String password = SecurityUtility.randomPassword();
 		// encode password
@@ -140,9 +153,11 @@ public class HomeController {
 		//
 		Customer customer = new Customer();
 		customer.setAccount(account);
-		Role role = new Role();
-		role.setId(1);
-		role.setName("ROLE_USER");
+		Role role = roleRepository.findByName("ROLE-USER");
+		if (role == null) {
+			role = new Role();
+			role.setName("ROLE-USER");
+		}
 		Set<AccountRole> accountRoles = new HashSet();
 		accountRoles.add(new AccountRole(role, account));
 		customerService.createCustomer(customer, accountRoles);
@@ -188,14 +203,11 @@ public class HomeController {
 		model.addAttribute("user", customer);
 		model.addAttribute("userPaymentList", customer.getCustomerPaymentList());
 		model.addAttribute("userShippingList", customer.getCustomerShippingList());
-		// model.addAttribute("oderList", user.getOderList());
+		model.addAttribute("orderList", oderService.getOderforCustomer(customer));
 		CustomerShipping userShipping = new CustomerShipping();
 		model.addAttribute("userShipping", userShipping);
 		model.addAttribute("listOfCreditCard", true);
 		model.addAttribute("listOfShippingAndresses", true);
-		List<String> stateList = USConstants.listOfUSStatesCode;
-		Collections.sort(stateList);
-		model.addAttribute("stateList", stateList);
 		model.addAttribute("classActiveEdit", true);
 		return "myProfile";
 	}
@@ -390,6 +402,7 @@ public class HomeController {
 		customerService.setCustomerDefaultShipping(defaultShippingId, customer);
 
 		model.addAttribute("user", customer);
+
 		model.addAttribute("listOfCreditCards", true);
 		model.addAttribute("classActiveShipping", true);
 		model.addAttribute("listOfShippingAddresses", true);
@@ -462,10 +475,12 @@ public class HomeController {
 	@PostMapping("/updateUserInfo")
 	public String updateUserInfo(@ModelAttribute("user") Customer customer,
 			@ModelAttribute("newPassword") String newPassword) {
-		customer.setModifyDate(formatDate.convertLocalDateTimeToDate(LocalDateTime.now()));
-		customer.getAccount()
+		Customer updateCustomer = customerService
+				.findByAccount(accountService.findByUsername(customer.getAccount().getUsername()));
+		updateCustomer.setModifyDate(formatDate.convertLocalDateTimeToDate(LocalDateTime.now()));
+		updateCustomer.getAccount()
 				.setPassword(SecurityUtility.passwordEncoder().encode(newPassword));
-		customerService.saveCustomer(customer);
+		customerService.saveCustomer(updateCustomer);
 		return "redirect:/myProfile";
 	}
 }

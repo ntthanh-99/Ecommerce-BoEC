@@ -57,7 +57,7 @@
 						<li><a th:href="@{/shoppingCart/cart}">Giỏ hàng</a></li>
 						<li><a sec:authorize="isAuthenticated()" th:href="@{/myProfile}">Tài khoản</a></li>
 						<li><a sec:authorize="isAnonymous()" th:href="@{/login}">Đăng nhập</a></li>
-						<li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">Đăng xuất</li>
+						<li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">Đăng xuất</a></li>
 					</ul>
 				</div>
 				<!--/.nav-collapse -->

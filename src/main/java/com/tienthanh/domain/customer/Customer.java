@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 
 import com.tienthanh.domain.AbstractClass;
 import com.tienthanh.domain.Account;
+import com.tienthanh.domain.oder.Oder;
 import com.tienthanh.domain.oder.ShoppingCart;
 
 @Entity
@@ -35,6 +36,9 @@ public class Customer extends AbstractClass {
 
 	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
 	private List<CustomerShipping> customerShippingList;
+
+	@OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+	private List<Oder> customerOderList;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private ShoppingCart shopingCart;
@@ -104,6 +108,14 @@ public class Customer extends AbstractClass {
 
 	public void setShopingCart(ShoppingCart shopingCart) {
 		this.shopingCart = shopingCart;
+	}
+
+	public List<Oder> getCustomerOderList() {
+		return customerOderList;
+	}
+
+	public void setCustomerOderList(List<Oder> customerOderList) {
+		this.customerOderList = customerOderList;
 	}
 
 }

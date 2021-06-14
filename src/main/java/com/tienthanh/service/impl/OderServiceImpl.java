@@ -19,10 +19,14 @@ import com.tienthanh.domain.product.Product;
 import com.tienthanh.repository.CartProductRepository;
 import com.tienthanh.repository.OderRepository;
 import com.tienthanh.repository.ShoppingCartRepository;
+import com.tienthanh.service.CustomerService;
 import com.tienthanh.service.OderService;
 
 @Service
 public class OderServiceImpl implements OderService {
+	@Autowired
+	private CustomerService customerService;
+
 	@Autowired
 	private CartProductRepository cartProductRepository;
 
@@ -44,8 +48,15 @@ public class OderServiceImpl implements OderService {
 	@Override
 	public CartProduct addProductToCartItem(Product product, Customer customer, int qty) {
 		// TODO Auto-generated method stub
+		if (customer.getShopingCart() == null) {
+			ShoppingCart shoppingCart = new ShoppingCart();
+			shoppingCart.setCustomer(customer);
+			customer.setShopingCart(shoppingCart);
+			saveShoppingCart(shoppingCart);
+			customerService.saveCustomer(customer);
+		}
 		List<CartProduct> cartProducts = findByShoppingCart(customer.getShopingCart());
-
+		// san pham da them roi
 		for (CartProduct cartProduct : cartProducts) {
 			if (product.getId() == cartProduct.getProduct().getId()) {
 				cartProduct.setQuanlity(cartProduct.getQuanlity() + qty);
@@ -53,11 +64,12 @@ public class OderServiceImpl implements OderService {
 				return cartProduct;
 			}
 		}
-
+		// san pham moi
+		ShoppingCart shoppingCart = findShoppingCartByCustomer(customer);
 		CartProduct cartItem = new CartProduct();
 		cartItem.setShoppingCart(customer.getShopingCart());
 		cartItem.setProduct(product);
-
+		cartItem.setShoppingCart(shoppingCart);
 		cartItem.setQuanlity(qty);
 		cartItem = cartProductRepository.save(cartItem);
 		return cartItem;
@@ -88,7 +100,7 @@ public class OderServiceImpl implements OderService {
 		// TODO Auto-generated method stub
 		Oder oder = new Oder();
 		oder.setCustomer(customer);
-		oder.setOderStatus("paid");
+		oder.setOderStatus("da thanh toan");
 		Shipping shipping = new Shipping();
 		shipping.setCustomerShipping(customerShipping);
 		shipping.setOder(oder);
@@ -107,6 +119,7 @@ public class OderServiceImpl implements OderService {
 		oder.setTotal(total);
 		oder.setCreateDate(formatDate.convertLocalDateTimeToDate(LocalDateTime.now()));
 		oder = oderRepository.save(oder);
+
 		return oder;
 	}
 
@@ -134,6 +147,18 @@ public class OderServiceImpl implements OderService {
 	public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
 		// TODO Auto-generated method stub
 		return shoppingCartRepository.save(shoppingCart);
+	}
+
+	@Override
+	public ShoppingCart findShoppingCartByCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		return shoppingCartRepository.findByCustomer(customer);
+	}
+
+	@Override
+	public List<Oder> getOderforCustomer(Customer customer) {
+		// TODO Auto-generated method stub
+		return oderRepository.findByCustomer(customer);
 	}
 
 }

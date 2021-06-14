@@ -15,6 +15,7 @@ import com.tienthanh.domain.customer.Customer;
 import com.tienthanh.domain.employee.Employee;
 import com.tienthanh.domain.security.AccountRole;
 import com.tienthanh.domain.security.Role;
+import com.tienthanh.repository.RoleRepository;
 import com.tienthanh.service.CustomerService;
 import com.tienthanh.service.EmployeeService;
 import com.tienthanh.service.impl.FormatDateImpl;
@@ -24,6 +25,9 @@ import com.tienthanh.utility.SecurityUtility;
 public class ECommerceBookStoreApplication implements CommandLineRunner {
 	@Autowired
 	private CustomerService customerService;
+
+	@Autowired
+	private RoleRepository roleRepository;
 
 	@Autowired
 	private FormatDateImpl formateDate;
@@ -43,15 +47,16 @@ public class ECommerceBookStoreApplication implements CommandLineRunner {
 		customer.setAccount(account);
 		customer.setCreateDate(formateDate.convertLocalDateTimeToDate(LocalDateTime.now()));
 
-		Role role = new Role();
-		role.setId(1);
-		role.setName("ROLE-USER");
+		Role role = roleRepository.findByName("ROLE-USER");
+		if (role == null) {
+			role = new Role();
+			role.setName("ROLE-USER");
+		}
 
 		Set<AccountRole> accountRoles = new HashSet<AccountRole>();
 		accountRoles.add(new AccountRole(role, account));
 
 		customerService.createCustomer(customer, accountRoles);
-
 	}
 
 }
